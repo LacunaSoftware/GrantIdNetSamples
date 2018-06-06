@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<div class="jumbotron">
+	<h1>This is a protected page</h1>
+	<p class="lead">Name: @ViewBag.Name</p>
+	<p class="lead">Email: @ViewBag.Email</p>
+	<p class="lead">Phone: @ViewBag.Phone</p>
+	<p><a href="/Home/Logout" class="btn btn-primary btn-lg">Logout &raquo;</a> &nbsp; <a href="/Home/PrivateResource" class="btn btn-primary btn-lg">Get a Private Resource! &raquo;</a></p>
+</div>
