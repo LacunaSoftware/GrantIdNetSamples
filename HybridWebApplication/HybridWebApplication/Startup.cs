@@ -24,13 +24,19 @@ namespace HybridWebApplication {
 				AuthenticationType = "Cookies"
 			});
 
+			var apiScopes = string.Empty;
+
+			if (!string.IsNullOrEmpty(Settings.ApiScopes)) {
+				apiScopes = " " + Settings.ApiScopes;
+			}
+
 			//Hybrid type of application
 			app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions() {
 				Authority = Settings.GrantIdSubscriptionUrl,
 
 				ClientId = Settings.AppId,
 				ClientSecret = Settings.ApplicationSecret,
-				Scope = "openid profile",
+				Scope = "openid profile" + apiScopes,
 				ResponseType = "code id_token",
 				RedirectUri = Settings.RedirectUri,
 				PostLogoutRedirectUri = Settings.RedirectUri,

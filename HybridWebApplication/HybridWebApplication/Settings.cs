@@ -31,5 +31,11 @@ namespace HybridWebApplication {
 				return ConfigurationManager.AppSettings["PrivateResourceRoute"];
 			}
 		}
+
+		public static string ApiScopes {
+			get {
+				return ConfigurationManager.AppSettings["ApiScopes"];
+			}
+		}
 	}
 }
