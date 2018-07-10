@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 
 [assembly: OwinStartup(typeof(HybridWebApplication.Startup))]
 
@@ -58,13 +59,17 @@ namespace HybridWebApplication {
 						id.AddClaim(new Claim("access_token", tokenResponse.AccessToken));
 
 						id.AddClaim(new Claim("id_token", n.ProtocolMessage.IdToken));
-
+						
 						id.AddClaims(n.JwtSecurityToken.Claims);
 
 						n.AuthenticationTicket = new AuthenticationTicket(
 							new ClaimsIdentity(id.Claims,
 							n.AuthenticationTicket.Identity.AuthenticationType, "name", "role"),
 							n.AuthenticationTicket.Properties);
+
+						//Get User ID and register it in local Database if necessary
+						var userIdClaim = id.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+						var userId = userIdClaim?.Value;						
 					},
 					RedirectToIdentityProvider = n => {
 						n.ProtocolMessage.Parameters.Add("culture", "pt-BR");
