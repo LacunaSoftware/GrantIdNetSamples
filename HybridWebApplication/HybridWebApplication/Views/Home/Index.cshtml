@@ -1,9 +1,32 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 
 <div class="jumbotron">
-    <h1>This is a non protected page</h1>
-    <p class="lead">To access a private resource click the button below</p>
-    <p><a href="/Home/PrivateRoute" class="btn btn-primary btn-lg">Login &raquo;</a></p>
+	<h1>This is a non protected page</h1>
+	<p class="lead">To access a private resource click the button below</p>
+	<p><button onclick="checkIfLogged()" id="login" class="btn btn-primary btn-lg">Check if logged &raquo;</button> <button onclick="_openpageview()" id="login" class="btn btn-primary btn-lg">Login &raquo;</button></p>
+	
 </div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+	function checkIfLogged(fieldid, objectid, opennew) {
+		var jqxhr = $.ajax("/Home/PrivateResource")
+			.done(function (r) {
+				alert("success");
+			})
+			.fail(function (r) {
+				alert("error");
+			})
+	}
+
+	function _openpageview(fieldid, objectid, opennew) {
+		var url = '/Home/PopupCallback';
+
+		web_window = window.open(url, '_blank', 'menubar=yes,location=no,scrollbars=yes,width=800,height=600,status=no,resizable=yes,top=0,left=0,dependent=yes,alwaysRaised=yes');
+		web_window.opener = window;
+		web_window.focus();
+	}
+</script>

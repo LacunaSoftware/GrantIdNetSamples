@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IdentityModel.Client;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,11 @@ namespace HybridWebApplication.Controllers {
 		public ActionResult Logout() {
 			Request.GetOwinContext().Authentication.SignOut();
 			return Redirect("/");
+		}
+
+		[Authorize]
+		public ActionResult PopupCallback() {
+			return View();
 		}
 
 

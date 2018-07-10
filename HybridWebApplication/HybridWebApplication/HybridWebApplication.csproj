@@ -249,6 +249,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\PrivateResource.cshtml" />
     <Content Include="Views\Home\PrivateResource2.cshtml" />
+    <Content Include="Views\Home\PopupCallback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
