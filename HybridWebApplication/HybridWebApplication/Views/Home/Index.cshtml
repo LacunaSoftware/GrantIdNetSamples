@@ -5,28 +5,63 @@
 <div class="jumbotron">
 	<h1>This is a non protected page</h1>
 	<p class="lead">To access a private resource click the button below</p>
-	<p><button onclick="checkIfLogged()" id="login" class="btn btn-primary btn-lg">Check if logged &raquo;</button> <button onclick="_openpageview()" id="login" class="btn btn-primary btn-lg">Login &raquo;</button></p>
-	
+	<p><button onclick="checkIfLogged()" id="login" class="btn btn-primary btn-lg">Check if logged &raquo;</button> 
+	<button onclick="_openpageview()" id="login" class="btn btn-primary btn-lg">Login &raquo;</button></p>
+	<button type="button" onclick="_openpageview(true)"  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+		Login with loading
+	</button>
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Verifying Login</h4>
+					</div>
+					<div class="modal-body text-center">
+						<img src="~/Content/loading.gif" />
+						<br />
+					</div>
+				</div>
+			</div>
+		</div>
+
 </div>
 
 @Scripts.Render("~/bundles/jquery")
 
 <script>
-	function checkIfLogged(fieldid, objectid, opennew) {
+	function checkIfLogged() {
+		$('#myModal').modal('hide');
 		var jqxhr = $.ajax("/Home/PrivateResource")
 			.done(function (r) {
-				alert("success");
+				alert("Logged in");
 			})
 			.fail(function (r) {
-				alert("error");
+				alert("Not logged in");
 			})
 	}
 
-	function _openpageview(fieldid, objectid, opennew) {
+	var web_window = null;
+
+	function _openpageview(checkLogin) {
 		var url = '/Home/PopupCallback';
 
 		web_window = window.open(url, '_blank', 'menubar=yes,location=no,scrollbars=yes,width=800,height=600,status=no,resizable=yes,top=0,left=0,dependent=yes,alwaysRaised=yes');
 		web_window.opener = window;
 		web_window.focus();
+
+		if (checkLogin) {
+			checkWindowStatus();
+		}
 	}
+
+	function checkWindowStatus() {
+		if (web_window == null || web_window.closed) {
+			checkIfLogged();
+		} else {
+			setTimeout(checkWindowStatus, 1000);
+		}
+	};
+
 </script>
