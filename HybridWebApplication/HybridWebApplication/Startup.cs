@@ -8,6 +8,7 @@ using Owin;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -81,6 +82,19 @@ namespace HybridWebApplication {
 								n.ProtocolMessage.IdTokenHint = idTokenHint.Value;
 							}
 						}
+
+						return Task.FromResult(0);
+					},  
+					AuthenticationFailed = n => {
+						var exception = n.Exception;
+						//log exception
+
+						if (exception is OpenIdConnectProtocolInvalidNonceException) {
+							n.Response.Redirect("/Home/PrivateRoute");
+						} else {
+							n.Response.Redirect("/Home/Error");
+						}
+						n.SkipToNextMiddleware();
 
 						return Task.FromResult(0);
 					}
