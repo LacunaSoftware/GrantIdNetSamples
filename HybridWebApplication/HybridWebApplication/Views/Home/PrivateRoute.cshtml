@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "About";
+﻿@using System.Security.Claims;
+@{
+	ViewBag.Title = "About";
 }
 <div class="jumbotron">
 	<h1>This is a protected page</h1>
@@ -10,4 +11,18 @@
 		<a href="/Home/Logout" class="btn btn-primary btn-lg">Logout &raquo;</a> &nbsp; <a href="/Home/PrivateResource" class="btn btn-primary btn-lg">Get a Private Resource! &raquo;</a>
 		<a href="/Home/PrivateResource2" class="btn btn-primary btn-lg">Get Private Resource 2 &raquo;</a>
 	</p>
+
+	@{
+		var identityToken = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "id_token");
+		var redirectUri = System.Web.HttpUtility.UrlEncode(new Uri(new Uri(Settings.SiteUrl), "/Home/PrivateRoute").ToString());
+	}
+
+	@if (identityToken != null) {
+		<br />
+
+		<h3>Profile</h3>
+		<p>
+			<a href="@(new Uri(new Uri(Settings.GrantIdSubscriptionUrl), $"/Profile?idToken={System.Web.HttpUtility.UrlEncode(identityToken.Value)}&redirecturi={redirectUri}&culture=pt-BR").ToString())" class="btn btn-primary btn-lg">Go to Profile</a>
+		</p>
+	}
 </div>

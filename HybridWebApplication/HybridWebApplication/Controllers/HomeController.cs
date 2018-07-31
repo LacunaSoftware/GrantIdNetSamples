@@ -32,11 +32,21 @@ namespace HybridWebApplication.Controllers {
 
 
 		[Authorize]
-		public async Task<ActionResult> PrivateRoute() {
+		public async Task<ActionResult> PrivateRoute(bool refresh = false) {
+			if (refresh) {
+				var cookie = Request.Cookies[".AspNet.Cookies"];
+				if (cookie != null) {
+					cookie.Expires = DateTime.Now.AddYears(-1);
+					Response.Cookies.Add(cookie);
+				}
+
+				return RedirectToAction(nameof(PrivateRoute));
+			}
+
 			var principal = (ClaimsPrincipal)User;
 			ViewBag.Name = principal.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
-			ViewBag.Phone = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "phone")?.Value;
-			ViewBag.Email = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+			ViewBag.Phone = principal.Claims.FirstOrDefault(c => c.Type == "phone")?.Value;
+			ViewBag.Email = principal.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
 
 			return View();
 		}

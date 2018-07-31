@@ -21,6 +21,11 @@ namespace HybridWebApplication {
 				return ConfigurationManager.AppSettings["RedirectUri"];
 			}
 		}
+		public static string SiteUrl {
+			get {
+				return ConfigurationManager.AppSettings["SiteUrl"];
+			}
+		}
 		public static string GrantIdSubscriptionUrl {
 			get {
 				return ConfigurationManager.AppSettings["GrantIdSubscriptionUrl"];
