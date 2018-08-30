@@ -21,7 +21,9 @@ namespace HybridWebApplication.Controllers {
 		}
 
 		public ActionResult Logout() {
-			Request.GetOwinContext().Authentication.SignOut();
+			if (User.Identity.IsAuthenticated) {
+				Request.GetOwinContext().Authentication.SignOut();
+			}
 			return Redirect("/");
 		}
 
