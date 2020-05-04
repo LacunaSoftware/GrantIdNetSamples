@@ -1,0 +1,29 @@
+﻿@using System.Security.Claims;
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+@{
+	var claims = User.Claims;
+}
+
+<div class="text-center">
+	<h1 class="display-4">This is a protected page</h1>
+
+	<dl>
+		@foreach (var claim in claims)
+		{
+			<dt>@claim.Type</dt>
+
+
+			<dd>@claim.Value</dd>
+		}
+		<dt>Access Token</dt>
+
+		<dd>@ViewBag.AccessToken</dd>
+
+		<dt>Identity Token</dt>
+
+		<dd>@ViewBag.IdentityToken</dd>
+	</dl>
+</div>
